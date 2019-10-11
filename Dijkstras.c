@@ -1,63 +1,69 @@
 #include<stdio.h>
-#include<stdlib.h>
-int i,j,k,a,b,u,v,n,ne=1;
-int mins,mincost=0,cost[9][9],parent[9];
-int find(int);
-int union1(int,int);
+void dijkstras(int start,int cost[100][100],int dist[100],int n)
+{
+int i,s[100],u,j,min,path[100],l=0;
+path[++l]=start;
+for(i=1;i<=n;i++)
+{
+s[i]=0;
+}
+  s[start]=1;
+  dist[start]=0;
+  for(j=1;j<=n;j++){
+  min=999;
+  for(i=1;i<=n;i++)
+  {
+  if(dist[i]<min && s[i]!=1){
+  min=dist[i];
+u=i;
+  }
+  }
+  path[++l]=u;
+  s[u]=1;
+  for(i=1;i<=n;i++){
+  if(cost[u][i]<999 && s[i]==0)
+  {
+  if(dist[i]>dist[u]+cost[u][i])
+  dist[i]=dist[u]+cost[u][i];
+ 
+  }
+  }
+ }
+for(i=1;i<=n;i++)
+printf("%d ",dist[i]);
+printf("\n");
+for(i=1;i<l;i++)
+printf("%d\t",path[i]);
+
+
+}
+
+
 int main()
 {
-printf("Enter the no. of vertices\n");
+int a[100][100],i,j,n,start,cost[100][100],dist[100];
+printf("enter the no. of nodes : ");
 scanf("%d",&n);
-printf("Enter the cost adjacency matrix\n");
 for(i=1;i<=n;i++)
 {
 for(j=1;j<=n;j++)
 {
-scanf("%d",&cost[i][j]);
-if(cost[i][j]==0)
-cost[i][j]=999;
+printf("%d-%d : ",i,j);
+scanf("%d",&a[i][j]);
 }
 }
-//printf("The edges of Minimum Cost Spanning Tree are\n\n");
-while(ne<n)
-{
-for(i=1,mins=999;i<=n;i++)
+printf("enter starting element : ");
+scanf("%d",&start);
+    for(i=1;i<=n;i++)
 {
 for(j=1;j<=n;j++)
 {
-if(cost[i][j]<mins)
-{
-mins=cost[i][j];
-a=u=i;
-b=v=j;
+cost[i][j]=a[i][j];
 }
 }
-}
-u=find(u);
-v=find(v);
-if(union1(u,v))
-{
-printf("%d edge (%d,%d) =%d\n",ne++,a,b,mins);
-mincost +=mins;
-}
-cost[a][b]=cost[b][a]=999;
-}
-printf("Minimum cost = %d\n",mincost);
+   for(i=1;i<=n;i++)
+    dist[i]=cost[start][i];
+   dijkstras(start,cost,dist,n);
+   return 0;
 }
 
-int find(int i)
-{
-while(parent[i])
-i=parent[i];
-return i;
-}
-
-int union1(int i,int j)
-{
-if(i!=j)
-{
-parent[j]=i;
-return 1;
-}
-return 0;
-}
