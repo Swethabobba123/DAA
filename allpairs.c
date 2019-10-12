@@ -1,36 +1,57 @@
 #include<stdio.h>
-int min(int a,int b)
+void allpairs(int **cost,int **A,int n)
 {
-if(a<b)
-return a;
-return b;
+	int i,j,k;
+	for(i=0;i<n;i++)
+	{
+		for(j=0;j<n;j++)
+		{
+			A[i][j]=cost[i][j];
+		}
+	}
+	for(k=0;k<n;k++)
+	{
+		for(i=0;i<n;i++)
+		{
+			for(j=0;j<n;j++)
+			{
+				if(A[i][j]>(A[i][k]+A[k][j]))
+				{
+					A[i][j]=A[i][k]+A[k][j];
+				}
+			}
+		}
+	}
 }
-int main()
+main()
 {
-int n,i,j,a[100][100],p=1;
-printf("enter size of matrix : ");
-scanf("%d",&n);
-for(i=1;i<=n;i++)
-for(j=1;j<=n;j++){
-printf("enter a[%d][%d] : ",i,j);
-   scanf("%d",&a[i][j]);
-}
-while(p<=n)
-{
-   for(i=1;i<=n;i++)
-        {
-  for(j=1;j<=n;j++)
-  {
- a[i][j]=min(a[i][j],a[i][p]+a[p][j]);
-         }
-   }
-   p++;
-}
-for(i=1;i<=n;i++){
- for(j=1;j<=n;j++){
-  printf("%d ",a[i][j]);
- }
-  printf("\n");
-}
-    return 0;
+	int **cost,**A,i,j,n;
+	scanf("%d",&n);
+	cost=(int **)malloc(n*sizeof(int *));
+	for(i=0;i<n;i++)
+	{
+		cost[i]=(int *)malloc(n*sizeof(int));
+	}
+	A=(int **)malloc(n*sizeof(int *));
+	for(i=0;i<n;i++)
+	{
+		A[i]=(int *)malloc(n*sizeof(int));
+	}
+	for(i=0;i<n;i++)
+	{
+		for(j=0;j<n;j++)
+		{
+			scanf("%d",&cost[i][j]);
+		}
+	}
+	allpairs(cost,A,n);
+	printf("hi");
+	for(i=0;i<n;i++)
+	{
+		for(j=0;j<n;j++)
+		{
+			printf("%d\t",A[i][j]);
+		}
+      printf("\n");
+	}
 }
