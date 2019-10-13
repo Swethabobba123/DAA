@@ -1,74 +1,72 @@
 #include<stdio.h>
-#include<stdlib.h>
-int link_index(float *t, int q, int r, int *link) {
-    int i, j, k;
-    i = q; j = r; k = 0;
-    while(i != 0 && j != 0) {
-        if(t[i] > t[j]) {
-            link[k] = i;
-            k = i;
-            i = link[i];
-        }
-        else {
-            link[k] = j;
-            k = j;
-            j = link[j];
-        }
-        if(i == 0) link[k] = j;
-        else link[k] = i;
-    }
-    return link[0];
+struct node{
+int profit;
+int weight;
+float p;
+};
+int main(){
+ struct  node ob[100];
+ int n,cap,l[100],i,j,p,t,c,y;
+ float x[100],totalp=0.0;
+ printf("enter no. of elements: ");
+ scanf("%d",&n);
+  printf("enter capacity f bag :");
+ scanf("%d",&cap);
+ for(i=1;i<=n;i++)
+ {
+  printf("enter profit :");
+  scanf("%d",&ob[i].profit);
+  printf("enter weight :");
+  scanf("%d",&ob[i].weight);
+  ob[i].p=0;
+ }
+  for(i=1;i<=n;i++){
+  c=ob[i].profit;
+  y=ob[i].weight;
+   x[i]=(float)c/y;
+l[i]=i;
+ }
+ for(i=1;i<=n;i++)
+for(j=i+1;j<=n;j++){
+if(x[i]<x[j]){
+t=l[i];
+l[i]=l[j];
+l[j]=t;
+t=x[i];
+x[i]=x[j];
+x[j]=t;
 }
-int sort(float *t, int l, int h, int *link) {
-    int m, q, r;
-    if(l == h)
-        return l;
-    if(l < h) {
-        m = (l + h) / 2;
-        q = sort(t, l, m, link);
-        r = sort(t, m + 1, h, link);
-        return link_index(t, q, r, link);
-    }
 }
-float* knapsack(int *w, int n, int m, int *link) {
-    float *x;
-    int i, u = m;
-    x = calloc(n + 1, sizeof(float));
-    for(i = link[0]; i != 0; i = link[i]) {
-        if(w[i] > u) break;
-        x[i] = 1;
-        u -= w[i];
+ for(i=1;i<=n;i++){
+    if(ob[l[i]].weight<=cap)
+    {
+         ob[l[i]].p=1;
+cap=cap-ob[l[i]].weight;    
+   }
+   else
+   break;
     }
-    if(i != 0) x[i] = (float)u / w[i];
-   
-    return x;
-}
-int main() {
-    int n, m, *w, *p, i, j, *link;
-    float *x, *t, profit = 0;
-    printf("Enter number of objects: ");
-    scanf("%d", &n);
-    printf("Enter the capacity of knapsack: ");
-    scanf("%d", &m);
-    w = calloc(n + 1, sizeof(int));
-    p = calloc(n + 1, sizeof(int));
-    printf("Enter %d weights: ", n);
-    for(i = 0; i < n; i++) scanf("%d", &w[i + 1]);
-   
-    printf("Enter %d profits: ", n);
-    for(i = 0; i < n; i++) scanf("%d", &p[i + 1]);
-    t = calloc(n + 1, sizeof(float));
-    for(i = 0; i < n; i++) t[i + 1] = (float)p[i + 1] / w[i + 1];
-   
-    link = calloc(n + 1, sizeof(int));
-    sort(t, 1, n, link);
-    x = knapsack(w, n, m, link);
-    for(i = link[0]; i != 0; i = link[i])
-        profit += p[i] * x[i];
-    printf("Solution: ");
-    for(i = 0; i < n; i++)
-        printf("%f ", x[i + 1]);
+      ob[l[i]].p=(float)cap/ob[l[i]].weight;
+    for(i=1;i<=n;i++)
+    {
+      printf("%d\t",ob[i].profit);
+    }
     printf("\n");
-    printf("Profit: %f\n", profit);
-    return 0;
+    for(i=1;i<=n;i++)
+    {
+ printf("%d\t",ob[i].weight);
+    }
+    printf("\n");
+     for(i=1;i<=n;i++)
+    {
+ printf("%.2f\t",ob[i].p);
+    }
+    printf("\n");
+ for(i=1;i<=n;i++)
+   {
+    totalp+=(ob[l[i]].p*ob[l[i]].profit);
+   }
+printf("Total Profit is :%.3f\n",totalp);
+return 0;
 }
+
