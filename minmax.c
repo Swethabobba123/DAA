@@ -22,7 +22,7 @@ void maxmin(int a[],int l,int h,int *min,int *max)
   maxmin(a,l,mid,min,max);
   max1=(*max);
   min1=(*min);
-  maxmin(a,mid+1,h);
+  maxmin(a,mid+1,h,&min1,&max1);
   if((*max)<max1)
   *max=max1;
   if((*min)>min1)
