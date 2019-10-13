@@ -1,12 +1,12 @@
 #include<stdio.h>
-void forward(int cost[30][30],int k,int n) 
+void backward(int cost[30][30],int k,int n) 
 {
 	int p[30],c[30],i,j,r,d[30],min;
-	c[n]=0;
-	for(i=n-1;i>=1;i--)            
+	c[1]=0;
+	for(i=2;i<=n;i++)            
 	{
 		min=9999;
-		for(r=n;r>i;r--)
+		for(r=1;r<i;r++)
 		{
 			if(cost[i][r]!=0 && (cost[i][r]+c[r])<=min)
 			{
@@ -18,8 +18,8 @@ void forward(int cost[30][30],int k,int n)
 	}
 	p[1]=1;
 	p[k]=n;
-	for(j=2;j<=k-1;j++)
-	   p[j]=d[p[j-1]];
+	for(j=k-1;j>=2;j--)
+	   p[j]=d[p[j+1]];
 	printf("Path Vector\n");
 	for(i=1;i<=k;i++)
 	   printf("%d\t",p[i]);
@@ -35,7 +35,7 @@ main()
 	for(i=1;i<=n;i++)
 	   for(j=1;j<=n;j++)
 	      scanf("%d",&cost[i][j]);
-	forward(cost,k,n);	
+      backward(cost,k,n);	
 }		
 
 
