@@ -1,58 +1,62 @@
 #include<stdio.h>
-int main(){
-int cost[20][20],p[20],c[20],i,j,k,n,b[20],m=2,min,sum=0,d;
-printf("enter no of vertices");
-scanf("%d",&n);
-printf("enter no of stages");
-scanf("%d",&k);
-for(i=1;i<=n;i++)
+void forward(int cost[30][30],int k,int n) 
 {
-for(j=1;j<=n;j++)
-{
-scanf("%d",&cost[i][j]);
-if(cost[i][j]==0)
-cost[i][j]=999;
+	int p[30],c[30],i,j,r,d[30],min;
+	c[n]=0;
+	for(i=n-1;i>=1;i--)            
+	{
+		min=9999;
+		for(r=n;r>i;r--)
+		{
+			if(cost[i][r]!=0 && (cost[i][r]+c[r])<=min)
+			{
+				c[i]=cost[i][r]+c[r];
+				min=c[i];
+				d[i]=r;
+			}
+		}
+	}
+	p[1]=1;
+	p[k]=n;
+	for(j=2;j<=k-1;j++)
+	   p[j]=d[p[j-1]];
+	printf("Path Vector\n");
+	for(i=1;i<=k;i++)
+	   printf("%d\t",p[i]);
 }
-}
-c[1]=0;
-for(i=2;i<=n;i++)
+main()
 {
-if(cost[1][i]!=999)
-{
-c[i]=cost[1][i];
-b[i]=1;
-}
-else
-{
-min=999;
-for(j=m;j<i;j++)
-{
-if(min>c[j]+cost[j][i])
-{
-  min=c[j]+cost[j][i];
-  c[i]=c[j]+cost[j][i];
-  b[i]=j;
-  }
-}
-}
-}
+	int i,j,cost[30][30],k,n;
+	printf("Enter no. of nodes\n");
+	scanf("%d",&n);
+	printf("Enter no. of stages\n");
+	scanf("%d",&k);
+	printf("Enter Cost matrix\n");
+	for(i=1;i<=n;i++)
+	   for(j=1;j<=n;j++)
+	      scanf("%d",&cost[i][j]);
+	forward(cost,k,n);	
+}		
 
-p[1]=1;
-p[k]=n;
-for(j=k-1;j>=2;j--)
-{
-d=p[j+1];
-p[j]=b[d];
-}
-for(i=1;i<=n;i++)
-printf("%d ",b[i]);
-for(i=1;i<=k;i++)
-{
-printf("%d ",p[i]);
-}
-for(i=1;i<k;i++)
-{
-sum=sum+cost[p[i]][p[i+1]];
-}
-printf("%d",sum);
-}
+
+
+
+/*
+o/p
+Enter no. of nodes
+9    
+Enter no. of stages
+5
+Enter Cost matrix
+0 5 2 0 0 0 0 0 0
+0 0 0 3 0 3 0 0 0
+0 0 0 6 5 8 0 0 0
+0 0 0 0 0 0 1 4 0
+0 0 0 0 0 0 6 2 0
+0 0 0 0 0 0 6 2 0
+0 0 0 0 0 0 0 0 7
+0 0 0 0 0 0 0 0 3
+0 0 0 0 0 0 0 0 0
+Path Vector
+1 3 5 8 9
+*/
