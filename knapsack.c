@@ -70,3 +70,8 @@ printf("Total Profit is :%.3f\n",totalp);
 return 0;
 }
 
+/*
+20
+25 24 15 p
+18 15 10 w
+*/
